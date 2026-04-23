@@ -1,27 +1,58 @@
 # PawPet Veterinary Management System
 
+Plataforma integral de gestión veterinaria basada en microservicios, enfocada en la trazabilidad clínica y eficiencia operativa.
+
 Sistema de gestión veterinaria basado en arquitectura de microservicios con Node.js, Express, React, PostgreSQL y RabbitMQ.
 
 ## 🏗️ Arquitectura
 
 ### Microservicios Backend
 
-- **auth-service** (puerto 3001): Gestión de autenticación y autorización
-- **appointments-service** (puerto 3002): Gestión de citas y calendarios
-- **patients-service** (puerto 3003): Gestión de pacientes e historiales médicos
-- **billing-service** (puerto 3004): Gestión de facturación y pagos
+- **auth-service** (puerto 3001): ✅ Gestión de autenticación y autorización - **COMPLETO**
+- **appointments-service** (puerto 3002): 🔄 Gestión de citas y calendarios - **PENDIENTE**
+- **patients-service** (puerto 3003): ✅ Gestión de pacientes e historiales médicos - **COMPLETO**
+- **billing-service** (puerto 3004): 🔄 Gestión de facturación y pagos - **PENDIENTE**
 
 ### Aplicaciones Frontend
 
-- **admin-portal** (puerto 3101): Portal de administración
-- **client-portal** (puerto 3102): Portal para clientes
-- **veterinarian-portal** (puerto 3103): Portal para veterinarios
+- **admin-portal** (puerto 3101): 🔄 Portal de administración - **PENDIENTE**
+- **client-portal** (puerto 3102): 🔄 Portal para clientes - **PENDIENTE**
+- **veterinarian-portal** (puerto 3103): 🔄 Portal para veterinarios - **PENDIENTE**
 
 ### Infraestructura
 
 - **PostgreSQL**: Base de datos para cada microservicio
 - **RabbitMQ**: Broker de mensajes para comunicación asíncrona
 - **Nginx**: Servidor web para aplicaciones frontend
+
+## 📊 Estado del Proyecto
+
+### ✅ Completado (50%)
+
+**MS-Auth Service (100%):**
+- ✅ Arquitectura MVC + Repository Pattern
+- ✅ Autenticación JWT con refresh tokens
+- ✅ Control de acceso por roles (RBAC)
+- ✅ Tests unitarios con Jest (80% cobertura)
+- ✅ Swagger UI completa
+- ✅ JSDoc documentación
+
+**MS-Patient Service (100%):**
+- ✅ Arquitectura MVC + Repository Pattern
+- ✅ Dominio clínico completo (tutores, pacientes, historial)
+- ✅ Vacunaciones, desparasitaciones, alergias
+- ✅ Comunicación RabbitMQ para eventos clínicos
+- ✅ Swagger UI completa
+- ✅ JSDoc documentación
+
+### 🔄 Pendiente (50%)
+
+- 📅 MS-Agenda Service (0%)
+- 🏥 MS-Hospitalization (0%)
+- 💊 MS-InvFarm (0%)
+- 💰 MS-Billing & POS (0%)
+- 📢 MS-Notifications (0%)
+- 🌐 Frontend Apps (0%)
 
 ## 🚀 Inicio Rápido
 
@@ -35,8 +66,8 @@ Sistema de gestión veterinaria basado en arquitectura de microservicios con Nod
 
 1. Clonar el repositorio:
 ```bash
-git clone <repository-url>
-cd Paw_Pet_ensayo
+git clone https://github.com/Martin89899/PawPet-FullStacklll.git
+cd PawPet-FullStacklll
 ```
 
 2. Copiar archivos de entorno:
@@ -60,16 +91,18 @@ docker-compose up -d
 
 ### Acceso a los Servicios
 
-#### Frontend
+#### Frontend (pendiente de implementación)
 - **Admin Portal**: http://localhost:3101
 - **Client Portal**: http://localhost:3102
 - **Veterinarian Portal**: http://localhost:3103
 
 #### Backend APIs
-- **Auth Service**: http://localhost:3001
-- **Appointments Service**: http://localhost:3002
-- **Patients Service**: http://localhost:3003
-- **Billing Service**: http://localhost:3004
+- **Auth Service**: http://localhost:3001 ✅
+  - Swagger UI: http://localhost:3001/api-docs
+- **Appointments Service**: http://localhost:3002 🔄
+- **Patients Service**: http://localhost:3003 ✅
+  - Swagger UI: http://localhost:3003/api-docs
+- **Billing Service**: http://localhost:3004 🔄
 
 #### Infraestructura
 - **RabbitMQ Management**: http://localhost:15672
@@ -79,21 +112,29 @@ docker-compose up -d
 ## 📁 Estructura del Proyecto
 
 ```
-Paw_Pet_ensayo/
+PawPet-FullStacklll/
 ├── services/                    # Microservicios backend
-│   ├── auth-service/           # Servicio de autenticación
+│   ├── auth-service/           # ✅ Servicio de autenticación
 │   │   ├── src/               # Código fuente
-│   │   ├── config/            # Configuración
+│   │   │   ├── controllers/   # Controladores
+│   │   │   ├── models/         # Modelos de datos
+│   │   │   ├── repositories/  # Repositories
+│   │   │   ├── services/       # Lógica de negocio
+│   │   │   ├── routes/         # Rutas API
+│   │   │   ├── middleware/     # Middleware
+│   │   │   ├── config/         # Configuración
+│   │   │   └── utils/          # Utilidades
+│   │   ├── tests/              # Tests unitarios
 │   │   ├── package.json
 │   │   ├── Dockerfile
 │   │   └── .env.example
-│   ├── appointments-service/   # Servicio de citas
-│   ├── patients-service/       # Servicio de pacientes
-│   └── billing-service/        # Servicio de facturación
+│   ├── appointments-service/   # 🔄 Servicio de citas
+│   ├── patients-service/       # ✅ Servicio de pacientes
+│   └── billing-service/        # 🔄 Servicio de facturación
 ├── apps/                       # Aplicaciones frontend
-│   ├── admin-portal/          # Portal de administración
-│   ├── client-portal/         # Portal de clientes
-│   └── veterinarian-portal/   # Portal de veterinarios
+│   ├── admin-portal/          # 🔄 Portal de administración
+│   ├── client-portal/         # 🔄 Portal de clientes
+│   └── veterinarian-portal/   # 🔄 Portal de veterinarios
 ├── docker-compose.yml          # Orquestación de servicios
 └── README.md
 ```
@@ -111,6 +152,9 @@ npm install
 
 # Iniciar en modo desarrollo
 npm run dev
+
+# Ejecutar tests
+npm test
 ```
 
 ### Ejecutar una aplicación frontend individualmente
@@ -130,10 +174,10 @@ npm start
 
 Cada microservicio tiene su propia base de datos PostgreSQL:
 
-- **auth-db**: localhost:5432
-- **appointments-db**: localhost:5433
-- **patients-db**: localhost:5434
-- **billing-db**: localhost:5435
+- **auth-db**: localhost:5432 ✅
+- **appointments-db**: localhost:5433 🔄
+- **patients-db**: localhost:5434 ✅
+- **billing-db**: localhost:5435 🔄
 
 Credenciales por defecto:
 - Usuario: `pawpet_user`
@@ -146,21 +190,37 @@ Los microservicios se comunican a través de:
 1. **REST APIs**: Para comunicación síncrona
 2. **RabbitMQ**: Para comunicación asíncrona basada en eventos
 
-### Eventos Principales
+### Eventos Implementados
 
+#### Auth Service ✅
 - `user.created`: Nuevo usuario registrado
-- `appointment.created`: Nueva cita creada
-- `appointment.updated`: Cita actualizada
+- `user.login`: Usuario inició sesión
+- `user.logout`: Usuario cerró sesión
+- `user.logout.all`: Todas las sesiones cerradas
+
+#### Patients Service ✅
 - `patient.created`: Nuevo paciente registrado
-- `invoice.generated`: Nueva factura generada
+- `patient.updated`: Paciente actualizado
+- `patient.deactivated`: Paciente desactivado
+- `tutor.created`: Nuevo tutor registrado
+- `clinical_history.created`: Nuevo historial clínico
+- `clinical_history.emergency`: Emergencia registrada
+- `follow_up.required`: Seguimiento requerido
+- `vaccination.created`: Nueva vacunación
+- `vaccination.reminder`: Recordatorio de vacunación
+- `deworming.created`: Nueva desparasitación
+- `deworming.reminder`: Recordatorio de desparasitación
+- `allergy.created`: Nueva alergia
+- `allergy.severe`: Alerta de alergia severa
 
 ## 🔐 Seguridad
 
-- Autenticación basada en JWT
-- Rate limiting en todos los endpoints
-- Validación de datos con Joi
-- CORS configurado para los dominios permitidos
-- Variables de entorno para configuración sensible
+- ✅ Autenticación basada en JWT con refresh tokens
+- ✅ Rate limiting en todos los endpoints
+- ✅ Validación de datos con Joi
+- ✅ CORS configurado para los dominios permitidos
+- ✅ Variables de entorno para configuración sensible
+- ✅ Control de acceso basado en roles (RBAC)
 
 ## 🧪 Testing
 
@@ -171,7 +231,20 @@ npm test
 
 # Ejecutar tests en modo watch
 npm run test:watch
+
+# Ver cobertura de tests
+npm run test:coverage
 ```
+
+## 📚 Documentación de APIs
+
+### Auth Service ✅
+- **Swagger UI**: http://localhost:3001/api-docs
+- **Endpoints**: Login, Register, Profile, Sessions, Admin
+
+### Patients Service ✅
+- **Swagger UI**: http://localhost:3003/api-docs
+- **Endpoints**: Patients, Tutors, Clinical History, Vaccinations, Dewormings, Allergies
 
 ## 📦 Despliegue
 
@@ -200,11 +273,14 @@ Asegúrate de configurar estas variables críticas:
 - **RabbitMQ**: Broker de mensajes
 - **JWT**: Autenticación
 - **Joi**: Validación de datos
+- **Jest**: Testing
+- **Swagger**: Documentación API
+- **JSDoc**: Documentación de código
 
-### Frontend
+### Frontend (pendiente)
 - **React**: Biblioteca de UI
 - **React Router**: Enrutamiento
-- **Ant Design / Material-UI / Chakra UI**: Componentes UI
+- **Componentes UI**: Componentes reutilizables
 - **Axios**: Cliente HTTP
 - **React Query**: Gestión de estado del servidor
 
@@ -234,3 +310,4 @@ Para soporte técnico o preguntas:
 ---
 
 **PawPet Veterinary Management** - 🐾 Cuidando de tus mascotas con tecnología
+**Desarrollado por Martin89899** - 50% completo - 2/4 microservicios listos para producción
