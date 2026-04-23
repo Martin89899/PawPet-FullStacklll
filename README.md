@@ -11,7 +11,7 @@ Sistema de gestión veterinaria basado en arquitectura de microservicios con Nod
 - **auth-service** (puerto 3001): ✅ Gestión de autenticación y autorización - **COMPLETO**
 - **appointments-service** (puerto 3002): 🔄 Gestión de citas y calendarios - **PENDIENTE**
 - **patients-service** (puerto 3003): ✅ Gestión de pacientes e historiales médicos - **COMPLETO**
-- **billing-service** (puerto 3004): 🔄 Gestión de facturación y pagos - **PENDIENTE**
+- **billing-service** (puerto 3004): ✅ Gestión de facturación y pagos - **COMPLETO**
 
 ### Aplicaciones Frontend
 
@@ -27,7 +27,7 @@ Sistema de gestión veterinaria basado en arquitectura de microservicios con Nod
 
 ## 📊 Estado del Proyecto
 
-### ✅ Completado (50%)
+### ✅ Completado (75%)
 
 **MS-Auth Service (100%):**
 - ✅ Arquitectura MVC + Repository Pattern
@@ -45,13 +45,21 @@ Sistema de gestión veterinaria basado en arquitectura de microservicios con Nod
 - ✅ Swagger UI completa
 - ✅ JSDoc documentación
 
-### 🔄 Pendiente (50%)
+**MS-Billing Service (100%):**
+- ✅ Arquitectura MVC + Repository Pattern
+- ✅ Gestión completa de facturación y pagos
+- ✅ Integración Stripe para pagos online
+- ✅ Generación de PDFs y reportes
+- ✅ Eventos RabbitMQ para sincronización
+- ✅ Swagger UI completa
+- ✅ Documentación técnica completa
+
+### 🔄 Pendiente (25%)
 
 - 📅 MS-Agenda Service (0%)
 - 🏥 MS-Hospitalization (0%)
 - 💊 MS-InvFarm (0%)
-- 💰 MS-Billing & POS (0%)
-- 📢 MS-Notifications (0%)
+-  MS-Notifications (0%)
 - 🌐 Frontend Apps (0%)
 
 ## 🚀 Inicio Rápido
@@ -102,7 +110,8 @@ docker-compose up -d
 - **Appointments Service**: http://localhost:3002 🔄
 - **Patients Service**: http://localhost:3003 ✅
   - Swagger UI: http://localhost:3003/api-docs
-- **Billing Service**: http://localhost:3004 🔄
+- **Billing Service**: http://localhost:3004 ✅
+  - Swagger UI: http://localhost:3004/api-docs
 
 #### Infraestructura
 - **RabbitMQ Management**: http://localhost:15672
@@ -130,7 +139,7 @@ PawPet-FullStacklll/
 │   │   └── .env.example
 │   ├── appointments-service/   # 🔄 Servicio de citas
 │   ├── patients-service/       # ✅ Servicio de pacientes
-│   └── billing-service/        # 🔄 Servicio de facturación
+│   └── billing-service/        # ✅ Servicio de facturación
 ├── apps/                       # Aplicaciones frontend
 │   ├── admin-portal/          # 🔄 Portal de administración
 │   ├── client-portal/         # 🔄 Portal de clientes
@@ -310,4 +319,4 @@ Para soporte técnico o preguntas:
 ---
 
 **PawPet Veterinary Management** - 🐾 Cuidando de tus mascotas con tecnología
-**Desarrollado por Martin89899** - 50% completo - 2/4 microservicios listos para producción
+**Desarrollado por Martin89899** - 75% completo - 3/4 microservicios listos para producción
