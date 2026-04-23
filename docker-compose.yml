@@ -1,6 +1,49 @@
 version: '3.8'
 
 services:
+  # Backend for Frontend (BFF) Service
+  bff-service:
+    build:
+      context: ./services/bff-service
+      dockerfile: Dockerfile
+    container_name: pawpet-bff-service
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - AUTH_SERVICE_URL=http://auth-service:3001
+      - PATIENTS_SERVICE_URL=http://patients-service:3003
+      - APPOINTMENTS_SERVICE_URL=http://appointments-service:3002
+      - BILLING_SERVICE_URL=http://billing-service:3004
+      - RABBITMQ_URL=amqp://pawpet_user:pawpet_password@rabbitmq:5672
+      - JWT_SECRET=your-super-secret-jwt-key-change-in-production
+      - CORS_ORIGIN=http://localhost:3101,http://localhost:3102,http://localhost:3103
+      - CACHE_TTL_SECONDS=300
+    ports:
+      - "3000:3000"
+    depends_on:
+      - auth-service
+      - patients-service
+      - redis
+      - rabbitmq
+    networks:
+      - pawpet-network
+    restart: unless-stopped
+
+  # Redis para caché del BFF
+  redis:
+    image: redis:7-alpine
+    container_name: pawpet-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - pawpet-network
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+
   # Base de datos PostgreSQL para cada microservicio
   auth-db:
     image: postgres:15
@@ -187,10 +230,8 @@ services:
       dockerfile: Dockerfile
     container_name: pawpet-admin-portal
     environment:
-      REACT_APP_API_BASE_URL: http://localhost:3001
-      REACT_APP_APPOINTMENTS_API: http://localhost:3002
-      REACT_APP_PATIENTS_API: http://localhost:3003
-      REACT_APP_BILLING_API: http://localhost:3004
+      REACT_APP_API_BASE_URL: http://localhost:3000
+      REACT_APP_BFF_API: http://localhost:3000
     ports:
       - "3101:3000"
     depends_on:
@@ -210,15 +251,15 @@ services:
       dockerfile: Dockerfile
     container_name: pawpet-client-portal
     environment:
-      REACT_APP_API_BASE_URL: http://localhost:3001
-      REACT_APP_APPOINTMENTS_API: http://localhost:3002
-      REACT_APP_PATIENTS_API: http://localhost:3003
+      REACT_APP_API_BASE_URL: http://localhost:3000
+      REACT_APP_BFF_API: http://localhost:3000
     ports:
       - "3102:3000"
     depends_on:
       - auth-service
       - appointments-service
       - patients-service
+      - billing-service
     networks:
       - pawpet-network
     volumes:
@@ -231,10 +272,8 @@ services:
       dockerfile: Dockerfile
     container_name: pawpet-veterinarian-portal
     environment:
-      REACT_APP_API_BASE_URL: http://localhost:3001
-      REACT_APP_APPOINTMENTS_API: http://localhost:3002
-      REACT_APP_PATIENTS_API: http://localhost:3003
-      REACT_APP_BILLING_API: http://localhost:3004
+      REACT_APP_API_BASE_URL: http://localhost:3000
+      REACT_APP_BFF_API: http://localhost:3000
     ports:
       - "3103:3000"
     depends_on:
@@ -254,6 +293,7 @@ volumes:
   patients_db_data:
   billing_db_data:
   rabbitmq_data:
+  redis_data:
 
 networks:
   pawpet-network:
