@@ -1,0 +1,260 @@
+version: '3.8'
+
+services:
+  # Base de datos PostgreSQL para cada microservicio
+  auth-db:
+    image: postgres:15
+    container_name: pawpet-auth-db
+    environment:
+      POSTGRES_DB: pawpet_auth
+      POSTGRES_USER: pawpet_user
+      POSTGRES_PASSWORD: pawpet_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - auth_db_data:/var/lib/postgresql/data
+    networks:
+      - pawpet-network
+
+  appointments-db:
+    image: postgres:15
+    container_name: pawpet-appointments-db
+    environment:
+      POSTGRES_DB: pawpet_appointments
+      POSTGRES_USER: pawpet_user
+      POSTGRES_PASSWORD: pawpet_password
+    ports:
+      - "5433:5432"
+    volumes:
+      - appointments_db_data:/var/lib/postgresql/data
+    networks:
+      - pawpet-network
+
+  patients-db:
+    image: postgres:15
+    container_name: pawpet-patients-db
+    environment:
+      POSTGRES_DB: pawpet_patients
+      POSTGRES_USER: pawpet_user
+      POSTGRES_PASSWORD: pawpet_password
+    ports:
+      - "5434:5432"
+    volumes:
+      - patients_db_data:/var/lib/postgresql/data
+    networks:
+      - pawpet-network
+
+  billing-db:
+    image: postgres:15
+    container_name: pawpet-billing-db
+    environment:
+      POSTGRES_DB: pawpet_billing
+      POSTGRES_USER: pawpet_user
+      POSTGRES_PASSWORD: pawpet_password
+    ports:
+      - "5435:5432"
+    volumes:
+      - billing_db_data:/var/lib/postgresql/data
+    networks:
+      - pawpet-network
+
+  # RabbitMQ para comunicación asíncrona
+  rabbitmq:
+    image: rabbitmq:3.12-management
+    container_name: pawpet-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: pawpet_user
+      RABBITMQ_DEFAULT_PASS: pawpet_password
+      RABBITMQ_DEFAULT_VHOST: pawpet_vhost
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - pawpet-network
+
+  # Microservicios
+  auth-service:
+    build:
+      context: ./services/auth-service
+      dockerfile: Dockerfile
+    container_name: pawpet-auth-service
+    environment:
+      NODE_ENV: development
+      PORT: 3001
+      DB_HOST: auth-db
+      DB_PORT: 5432
+      DB_NAME: pawpet_auth
+      DB_USER: pawpet_user
+      DB_PASSWORD: pawpet_password
+      RABBITMQ_URL: amqp://pawpet_user:pawpet_password@rabbitmq:5672/pawpet_vhost
+      JWT_SECRET: your-super-secret-jwt-key-change-in-production
+    ports:
+      - "3001:3001"
+    depends_on:
+      - auth-db
+      - rabbitmq
+    networks:
+      - pawpet-network
+    volumes:
+      - ./services/auth-service:/app
+      - /app/node_modules
+
+  appointments-service:
+    build:
+      context: ./services/appointments-service
+      dockerfile: Dockerfile
+    container_name: pawpet-appointments-service
+    environment:
+      NODE_ENV: development
+      PORT: 3002
+      DB_HOST: appointments-db
+      DB_PORT: 5432
+      DB_NAME: pawpet_appointments
+      DB_USER: pawpet_user
+      DB_PASSWORD: pawpet_password
+      RABBITMQ_URL: amqp://pawpet_user:pawpet_password@rabbitmq:5672/pawpet_vhost
+    ports:
+      - "3002:3002"
+    depends_on:
+      - appointments-db
+      - rabbitmq
+      - auth-service
+    networks:
+      - pawpet-network
+    volumes:
+      - ./services/appointments-service:/app
+      - /app/node_modules
+
+  patients-service:
+    build:
+      context: ./services/patients-service
+      dockerfile: Dockerfile
+    container_name: pawpet-patients-service
+    environment:
+      NODE_ENV: development
+      PORT: 3003
+      DB_HOST: patients-db
+      DB_PORT: 5432
+      DB_NAME: pawpet_patients
+      DB_USER: pawpet_user
+      DB_PASSWORD: pawpet_password
+      RABBITMQ_URL: amqp://pawpet_user:pawpet_password@rabbitmq:5672/pawpet_vhost
+    ports:
+      - "3003:3003"
+    depends_on:
+      - patients-db
+      - rabbitmq
+      - auth-service
+    networks:
+      - pawpet-network
+    volumes:
+      - ./services/patients-service:/app
+      - /app/node_modules
+
+  billing-service:
+    build:
+      context: ./services/billing-service
+      dockerfile: Dockerfile
+    container_name: pawpet-billing-service
+    environment:
+      NODE_ENV: development
+      PORT: 3004
+      DB_HOST: billing-db
+      DB_PORT: 5432
+      DB_NAME: pawpet_billing
+      DB_USER: pawpet_user
+      DB_PASSWORD: pawpet_password
+      RABBITMQ_URL: amqp://pawpet_user:pawpet_password@rabbitmq:5672/pawpet_vhost
+      STRIPE_SECRET_KEY: sk_test_your-stripe-secret-key
+    ports:
+      - "3004:3004"
+    depends_on:
+      - billing-db
+      - rabbitmq
+      - auth-service
+    networks:
+      - pawpet-network
+    volumes:
+      - ./services/billing-service:/app
+      - /app/node_modules
+
+  # Aplicaciones frontend
+  admin-portal:
+    build:
+      context: ./apps/admin-portal
+      dockerfile: Dockerfile
+    container_name: pawpet-admin-portal
+    environment:
+      REACT_APP_API_BASE_URL: http://localhost:3001
+      REACT_APP_APPOINTMENTS_API: http://localhost:3002
+      REACT_APP_PATIENTS_API: http://localhost:3003
+      REACT_APP_BILLING_API: http://localhost:3004
+    ports:
+      - "3101:3000"
+    depends_on:
+      - auth-service
+      - appointments-service
+      - patients-service
+      - billing-service
+    networks:
+      - pawpet-network
+    volumes:
+      - ./apps/admin-portal:/app
+      - /app/node_modules
+
+  client-portal:
+    build:
+      context: ./apps/client-portal
+      dockerfile: Dockerfile
+    container_name: pawpet-client-portal
+    environment:
+      REACT_APP_API_BASE_URL: http://localhost:3001
+      REACT_APP_APPOINTMENTS_API: http://localhost:3002
+      REACT_APP_PATIENTS_API: http://localhost:3003
+    ports:
+      - "3102:3000"
+    depends_on:
+      - auth-service
+      - appointments-service
+      - patients-service
+    networks:
+      - pawpet-network
+    volumes:
+      - ./apps/client-portal:/app
+      - /app/node_modules
+
+  veterinarian-portal:
+    build:
+      context: ./apps/veterinarian-portal
+      dockerfile: Dockerfile
+    container_name: pawpet-veterinarian-portal
+    environment:
+      REACT_APP_API_BASE_URL: http://localhost:3001
+      REACT_APP_APPOINTMENTS_API: http://localhost:3002
+      REACT_APP_PATIENTS_API: http://localhost:3003
+      REACT_APP_BILLING_API: http://localhost:3004
+    ports:
+      - "3103:3000"
+    depends_on:
+      - auth-service
+      - appointments-service
+      - patients-service
+      - billing-service
+    networks:
+      - pawpet-network
+    volumes:
+      - ./apps/veterinarian-portal:/app
+      - /app/node_modules
+
+volumes:
+  auth_db_data:
+  appointments_db_data:
+  patients_db_data:
+  billing_db_data:
+  rabbitmq_data:
+
+networks:
+  pawpet-network:
+    driver: bridge
