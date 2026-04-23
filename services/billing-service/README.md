@@ -2,43 +2,43 @@
 
 Microservicio de facturación y pagos para PawPet Veterinary Management System.
 
-## 🎯 Overview
+## Overview
 
 El **Billing Service** es responsable de gestionar toda la facturación, pagos y procesos financieros del sistema veterinario. Ofrece capacidades completas de facturación electrónica, procesamiento de pagos múltiples métodos, y generación de documentos PDF.
 
-## 🚀 Características Principales
+## Características Principales
 
-### 💳 **Gestión de Facturas**
+### Gestión de Facturas
 - Creación y gestión de facturas con múltiples items
 - Cálculo automático de impuestos y totales
 - Estados de factura: pending, paid, cancelled, refunded
 - Generación automática de números de factura únicos
 
-### 💰 **Procesamiento de Pagos**
+### Procesamiento de Pagos
 - **Stripe Integration**: Pagos online con tarjetas
 - **Pagos Manuales**: Efectivo, transferencia, cheques
 - Webhooks para confirmación de pagos
 - Soporte para reembolsos y devoluciones
 
-### 📄 **Generación de Documentos**
+### Generación de Documentos
 - Facturas en PDF con diseño profesional
 - Recibos de pago
 - Reportes de facturación
 - Exportación de datos
 
-### 🛍️ **Gestión de Productos/Servicios**
+### Gestión de Productos/Servicios
 - Catálogo de productos y servicios
 - Categorización y tipos
 - Precios y disponibilidad
 - Búsqueda y filtrado
 
-### 📡 **Integración con Microservicios**
+### Integración con Microservicios
 - Eventos RabbitMQ para comunicación asíncrona
 - Integración con appointments-service
 - Integración con patients-service
 - Sincronización de datos en tiempo real
 
-## 🏗️ Arquitectura
+## Arquitectura
 
 El servicio implementa una arquitectura limpia con los siguientes patrones:
 
@@ -47,7 +47,7 @@ El servicio implementa una arquitectura limpia con los siguientes patrones:
 - **Service Layer**: Lógica de negocio centralizada
 - **Event-Driven Architecture**: Comunicación asíncrona
 
-### 📁 Estructura del Proyecto
+### Estructura del Proyecto
 
 ```
 src/

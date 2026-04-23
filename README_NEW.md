@@ -122,7 +122,7 @@ El sistema garantiza que ningún servicio clínico quede sin cobrar mediante:
 
 ## Estado Actual del Proyecto
 
-### Microservicios Completados (100%)
+### Microservicios Completados (75%)
 
 **MS-Auth Service (100%)**
 - Arquitectura MVC + Repository Pattern
@@ -146,40 +146,13 @@ El sistema garantiza que ningún servicio clínico quede sin cobrar mediante:
 - Eventos RabbitMQ para sincronización
 - Swagger UI completa y documentación técnica
 
-**MS-Agenda Service (100%)**
-- Gestión completa de citas con WebSockets
-- Actualización en tiempo real de estados
-- Calendario multi-vista con disponibilidad
-- Transición de estados: Agendado → En Consulta → Finalizado
-- Recordatorios automáticos programados
+### Microservicios en Desarrollo (25%)
 
-**MS-Hospitalization Service (100%)**
-- Hoja de monitoreo interactiva para internados
-- Registro de constantes vitales con alertas automáticas
-- Trazabilidad completa de fármacos controlados
-- Sistema de alertas críticas basado en signos vitales
-- Integración con inventario y billing
-
-**MS-InvFarm Service (100%)**
-- Control de stock por lote con trazabilidad
-- Alertas de vencimiento y stock bajo
-- Descuento automático por uso clínico
-- Gestión de sustancias controladas con audit log
-- Reportes de valor de inventario y analítica de uso
-
-**MS-Notifications Service (100%)**
-- Sistema de notificaciones asíncrono
-- Múltiples canales: email, SMS, push
-- Plantillas personalizables
-- Campañas de notificación
-- Reportes de entrega y engagement
-
-### Aplicaciones Frontend (Pendiente de Desarrollo)
-
-- **Portal Médico** (React): Acceso al historial clínico tipificado, formularios dinámicos para constantes vitales
-- **Módulo de Recepción** (React): Calendario multi-vista con actualización en tiempo real
-- **Panel Administrativo** (React): Visibilidad financiera completa, control de inventario por lote
-- **Portal del Tutor** (React Web Responsiva): Historial básico y notificaciones
+- MS-Agenda Service (0%)
+- MS-Hospitalization (0%)
+- MS-InvFarm (0%)
+- MS-Notifications (0%)
+- Frontend Apps (0%)
 
 ## Instalación y Despliegue
 
@@ -203,9 +176,6 @@ cp services/auth-service/.env.example services/auth-service/.env
 cp services/appointments-service/.env.example services/appointments-service/.env
 cp services/patients-service/.env.example services/patients-service/.env
 cp services/billing-service/.env.example services/billing-service/.env
-cp services/hospitalization-service/.env.example services/hospitalization-service/.env
-cp services/inventory-service/.env.example services/inventory-service/.env
-cp services/notifications-service/.env.example services/notifications-service/.env
 ```
 
 3. Iniciar todos los servicios:
@@ -217,12 +187,8 @@ docker-compose up -d
 
 #### APIs Backend
 - **Auth Service**: http://localhost:3001 (Swagger: http://localhost:3001/api-docs)
-- **Appointments Service**: http://localhost:3002 (Swagger: http://localhost:3002/api-docs)
 - **Patients Service**: http://localhost:3003 (Swagger: http://localhost:3003/api-docs)
 - **Billing Service**: http://localhost:3004 (Swagger: http://localhost:3004/api-docs)
-- **Hospitalization Service**: http://localhost:3005 (Swagger: http://localhost:3005/api-docs)
-- **Inventory Service**: http://localhost:3006 (Swagger: http://localhost:3006/api-docs)
-- **Notifications Service**: http://localhost:3007 (Swagger: http://localhost:3007/api-docs)
 
 #### Infraestructura
 - **RabbitMQ Management**: http://localhost:15672
@@ -260,5 +226,4 @@ Este proyecto está licenciado bajo la Licencia MIT.
 ---
 
 **PawPet Veterinary Management** - Cuidando de tus mascotas con tecnología y eficiencia operativa
-**Desarrollado por Martin89899** - 100% completo - 7/7 microservicios listos para producción
-
+**Desarrollado por Martin89899** - 75% completo - 3/4 microservicios listos para producción

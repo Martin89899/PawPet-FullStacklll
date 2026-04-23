@@ -1,12 +1,12 @@
-# 🚀 PawPet Project - Prerequisites and Setup Guide
+# PawPet Project - Prerequisites and Setup Guide
 
-## ⚠️ **IMPORTANTE: REQUISITOS OBLIGATORIOS ANTES DE PROBAR**
+## IMPORTANTE: REQUISITOS OBLIGATORIOS ANTES DE PROBAR
 
-### 🐳 **1. Docker y Docker Compose**
+### 1. Docker y Docker Compose
 
 El proyecto requiere Docker Desktop instalado para ejecutar la infraestructura.
 
-#### **Windows:**
+#### Windows:
 ```bash
 # Descargar e instalar Docker Desktop for Windows
 # https://www.docker.com/products/docker-desktop/

@@ -52,7 +52,7 @@ class AppointmentService {
           throw new NotFoundError('Veterinario no encontrado');
         }
 
-        if (!veterinator.is_active) {
+        if (!veterinarian.is_active) {
           throw new AvailabilityError('Veterinario no está disponible');
         }
 

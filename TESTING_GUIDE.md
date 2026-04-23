@@ -1,49 +1,49 @@
-# 🧪 PawPet Testing Guide - Guía Completa de Pruebas
+# PawPet Testing Guide - Guía Completa de Pruebas
 
-## 🎯 **Estado Actual del Proyecto para Pruebas**
+## Estado Actual del Proyecto para Pruebas
 
-### ✅ **Servicios Completos (75%)**
-- **auth-service** (puerto 3001) ✅ Autenticación y autorización
-- **patients-service** (puerto 3003) ✅ Gestión de pacientes clínicos  
-- **appointments-service** (puerto 3002) ✅ Gestión de citas y calendarios
-- **billing-service** (puerto 3004) ✅ Facturación y pagos
-- **bff-service** (puerto 3000) ✅ API Gateway
+### Servicios Completos (75%)
+- **auth-service** (puerto 3001) - Autenticación y autorización
+- **patients-service** (puerto 3003) - Gestión de pacientes clínicos  
+- **appointments-service** (puerto 3002) - Gestión de citas y calendarios
+- **billing-service** (puerto 3004) - Facturación y pagos
+- **bff-service** (puerto 3000) - API Gateway
 
-### 🔄 **Pendiente (25%)**
+### Pendiente (25%)
 - Frontend Applications (React apps)
 
 ---
 
-## 📋 **CHECKLIST COMPLETA PARA PRUEBAS**
+## CHECKLIST COMPLETA PARA PRUEBAS
 
-### 🔧 **1. Configuración de Variables de Entorno**
+### 1. Configuración de Variables de Entorno
 
-#### ✅ **Auth Service** - `.env.example` existe
+#### Auth Service - `.env.example` existe
 ```bash
 cp services/auth-service/.env.example services/auth-service/.env
 ```
 
-#### ✅ **Patients Service** - `.env.example` existe  
+#### Patients Service - `.env.example` existe  
 ```bash
 cp services/patients-service/.env.example services/patients-service/.env
 ```
 
-#### ✅ **Appointments Service** - `.env.example` existe
+#### Appointments Service - `.env.example` existe
 ```bash
 cp services/appointments-service/.env.example services/appointments-service/.env
 ```
 
-#### ✅ **Billing Service** - `.env.example` existe
+#### Billing Service - `.env.example` existe
 ```bash
 cp services/billing-service/.env.example services/billing-service/.env
 ```
 
-#### ✅ **BFF Service** - `.env.example` existe
+#### BFF Service - `.env.example` existe
 ```bash
 cp services/bff-service/.env.example services/bff-service/.env
 ```
 
-### 🗄️ **2. Configuración de Base de Datos PostgreSQL**
+### 2. Configuración de Base de Datos PostgreSQL
 
 El proyecto usa PostgreSQL con las siguientes bases de datos:
 - **auth-db**: localhost:5432 (pawpet_auth)
@@ -51,7 +51,7 @@ El proyecto usa PostgreSQL con las siguientes bases de datos:
 - **patients-db**: localhost:5434 (pawpet_patients)
 - **billing-db**: localhost:5435 (pawpet_billing)
 
-#### **Requisitos PostgreSQL:**
+#### Requisitos PostgreSQL:
 ```bash
 # Asegurar que PostgreSQL esté corriendo
 # Crear bases de datos si no existen:
@@ -68,16 +68,16 @@ GRANT ALL PRIVILEGES ON DATABASE pawpet_patients TO pawpet_user;
 GRANT ALL PRIVILEGES ON DATABASE pawpet_billing TO pawpet_user;
 ```
 
-### 🐰 **3. Configuración de RabbitMQ**
+### 3. Configuración de RabbitMQ
 
-#### **Requisitos RabbitMQ:**
+#### Requisitos RabbitMQ:
 ```bash
 # RabbitMQ debe estar corriendo en localhost:5672
 # Crear usuario pawpet_user con contraseña pawpet_password
 # Crear vhost pawpet_vhost
 ```
 
-#### **Verificación:**
+#### Verificación:
 ```bash
 # Verificar conexión
 rabbitmqctl status
@@ -85,9 +85,9 @@ rabbitmqctl list_users
 rabbitmqctl list_vhosts
 ```
 
-### 📦 **4. Instalación de Dependencias**
+### 4. Instalación de Dependencias
 
-#### **Para cada servicio:**
+#### Para cada servicio:
 ```bash
 # Auth Service
 cd services/auth-service
