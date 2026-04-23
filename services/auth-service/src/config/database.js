@@ -14,12 +14,12 @@ const pool = new Pool({
 async function connectDatabase() {
   try {
     await pool.connect();
-    console.log('✅ Connected to PostgreSQL database');
+    console.log('Conectado exitosamente a la base de datos PostgreSQL');
     
     // Crear tablas si no existen
     await createTables();
   } catch (error) {
-    console.error('❌ Database connection error:', error);
+    console.error('Error en conexión a base de datos:', error);
     throw error;
   }
 }
@@ -91,16 +91,15 @@ async function createTables() {
     await pool.query('CREATE INDEX IF NOT EXISTS idx_sessions_user_id ON sessions(user_id);');
     await pool.query('CREATE INDEX IF NOT EXISTS idx_login_attempts_email ON login_attempts(email);');
 
-    console.log('✅ Database tables created/verified');
+    console.log('Tablas de base de datos creadas/verificadas');
   } catch (error) {
-    console.error('❌ Error creating tables:', error);
-    throw error;
+    console.error('Error al crear tablas:', error);
   }
 }
 
 async function closeDatabase() {
   await pool.end();
-  console.log('📴 Database connection closed');
+  console.log('Conexión a base de datos cerrada');
 }
 
 module.exports = {

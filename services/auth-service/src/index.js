@@ -73,11 +73,11 @@ async function startServer() {
     await connectDatabase();
     
     app.listen(PORT, () => {
-      console.log(`🚀 Auth Service running on port ${PORT}`);
-      console.log(`📊 Health check: http://localhost:${PORT}/health`);
+      console.log(`Auth Service iniciado en puerto ${PORT}`);
+      console.log(`Health check: http://localhost:${PORT}/health`);
     });
   } catch (error) {
-    console.error('❌ Failed to start server:', error);
+    console.error('Error al iniciar servidor:', error);
     process.exit(1);
   }
 }

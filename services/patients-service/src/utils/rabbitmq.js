@@ -39,10 +39,10 @@ const connectRabbitMQ = async () => {
     await channel.bindQueue('patients.notifications', 'pawpet.notifications', 'reminder.*');
     await channel.bindQueue('patients.notifications', 'pawpet.notifications', 'alert.*');
 
-    console.log('✅ Connected to RabbitMQ for Patients Service');
+    console.log('Conectado exitosamente a RabbitMQ para el Patients Service');
     return true;
   } catch (error) {
-    console.error('❌ Error connecting to RabbitMQ:', error);
+    console.error('Error al conectar a RabbitMQ:', error);
     return false;
   }
 };
@@ -57,7 +57,7 @@ const connectRabbitMQ = async () => {
 const publishEvent = async (routingKey, data, exchange = 'pawpet.events') => {
   try {
     if (!channel) {
-      console.warn('⚠️ RabbitMQ channel not available, skipping event publication');
+      console.warn('Canal de RabbitMQ no disponible, omitiendo publicación de evento');
       return false;
     }
 
@@ -83,14 +83,14 @@ const publishEvent = async (routingKey, data, exchange = 'pawpet.events') => {
     );
 
     if (published) {
-      console.log(`📤 Event published: ${routingKey}`, data);
+      console.log(`Evento publicado: ${routingKey}`, data);
     } else {
-      console.warn(`⚠️ Failed to publish event: ${routingKey}`);
+      console.warn(`Error al publicar evento: ${routingKey}`);
     }
 
     return published;
   } catch (error) {
-    console.error(`❌ Error publishing event ${routingKey}:`, error);
+    console.error(`Error al publicar evento ${routingKey}:`, error);
     return false;
   }
 };
@@ -105,7 +105,7 @@ const publishEvent = async (routingKey, data, exchange = 'pawpet.events') => {
 const subscribeToEvent = async (pattern, callback, queue = 'patients.events') => {
   try {
     if (!channel) {
-      console.warn('⚠️ RabbitMQ channel not available, skipping subscription');
+      console.warn('Canal de RabbitMQ no disponible, omitiendo suscripción');
       return false;
     }
 
@@ -113,7 +113,7 @@ const subscribeToEvent = async (pattern, callback, queue = 'patients.events') =>
       if (message) {
         try {
           const event = JSON.parse(message.content.toString());
-          console.log(`📥 Event received: ${pattern}`, event);
+          console.log(`Evento recibido: ${pattern}`, event);
           
           // Ejecutar callback con el evento
           callback(event, message);
@@ -121,16 +121,16 @@ const subscribeToEvent = async (pattern, callback, queue = 'patients.events') =>
           // Acknowledge message
           channel.ack(message);
         } catch (error) {
-          console.error(`❌ Error processing event ${pattern}:`, error);
+          console.error(`Error al procesar evento ${pattern}:`, error);
           channel.nack(message, false, false);
         }
       }
     }, { noAck: false });
 
-    console.log(`👂 Subscribed to events: ${pattern}`);
+    console.log(`Suscrito a eventos: ${pattern}`);
     return true;
   } catch (error) {
-    console.error(`❌ Error subscribing to events ${pattern}:`, error);
+    console.error(`Error al suscribir a eventos ${pattern}:`, error);
     return false;
   }
 };
@@ -151,10 +151,10 @@ const closeConnection = async () => {
       connection = null;
     }
 
-    console.log('📴 RabbitMQ connection closed');
+    console.log('Conexión RabbitMQ cerrada');
     return true;
   } catch (error) {
-    console.error('❌ Error closing RabbitMQ connection:', error);
+    console.error('Error al cerrar conexión RabbitMQ:', error);
     return false;
   }
 };
@@ -244,19 +244,19 @@ const handleIncomingEvents = async () => {
   // Eventos del auth service
   await subscribeToEvent('user.*', async (event, message) => {
     // Manejar eventos de usuarios creados, actualizados, etc.
-    console.log('🔄 Processing user event:', event);
+    console.log('Procesando evento de usuario:', event);
   });
 
   // Eventos del billing service
   await subscribeToEvent('billing.*', async (event, message) => {
     // Manejar eventos de facturación
-    console.log('💰 Processing billing event:', event);
+    console.log('Procesando evento de facturación:', event);
   });
 
   // Eventos del notifications service
   await subscribeToEvent('notification.*', async (event, message) => {
     // Manejar eventos de notificaciones
-    console.log('📬 Processing notification event:', event);
+    console.log('Procesando evento de notificación:', event);
   });
 };
 
@@ -271,13 +271,13 @@ if (process.env.NODE_ENV !== 'test') {
 
 // Manejar cierre graceful
 process.on('SIGINT', async () => {
-  console.log('🔄 Gracefully shutting down RabbitMQ connection...');
+  console.log('Cerrando conexión RabbitMQ de forma controlada...');
   await closeConnection();
   process.exit(0);
 });
 
 process.on('SIGTERM', async () => {
-  console.log('🔄 Gracefully shutting down RabbitMQ connection...');
+  console.log('Cerrando conexión RabbitMQ de forma controlada...');
   await closeConnection();
   process.exit(0);
 });

@@ -9,14 +9,14 @@ async function connectRabbitMQ() {
     connection = await amqp.connect(url);
     channel = await connection.createChannel();
     
-    console.log('✅ Connected to RabbitMQ');
+    console.log('Conectado exitosamente a RabbitMQ');
     
     // Configurar exchanges y colas
     await setupExchangesAndQueues();
     
     return channel;
   } catch (error) {
-    console.error('❌ RabbitMQ connection error:', error);
+    console.error('Error en conexión RabbitMQ:', error);
     throw error;
   }
 }
@@ -42,7 +42,7 @@ async function createQueue(routingKey, exchange) {
   await channel.assertQueue(queueName, { durable: true });
   await channel.bindQueue(queueName, exchange, routingKey);
   
-  console.log(`📬 Queue ${queueName} bound to exchange ${exchange} with routing key ${routingKey}`);
+  console.log(`Cola ${queueName} vinculada al exchange ${exchange} con routing key ${routingKey}`);
 }
 
 async function publishEvent(eventType, eventData) {
@@ -68,14 +68,14 @@ async function publishEvent(eventType, eventData) {
     );
     
     if (published) {
-      console.log(`📤 Event published: ${eventType}`);
+      console.log(`Evento publicado: ${eventType}`);
     } else {
-      console.log(`❌ Failed to publish event: ${eventType}`);
+      console.log(`Error al publicar evento: ${eventType}`);
     }
     
     return published;
   } catch (error) {
-    console.error('❌ Error publishing event:', error);
+    console.error('Error al publicar evento:', error);
     throw error;
   }
 }
@@ -95,15 +95,15 @@ async function subscribeToEvent(eventType, callback) {
           callback(event);
           channel.ack(message);
         } catch (error) {
-          console.error(`❌ Error processing message for ${eventType}:`, error);
+          console.error(`Error al procesar mensaje para ${eventType}:`, error);
           channel.nack(message, false, false);
         }
       }
     });
     
-    console.log(`👂 Subscribed to event: ${eventType}`);
+    console.log(`Suscrito al evento: ${eventType}`);
   } catch (error) {
-    console.error('❌ Error subscribing to event:', error);
+    console.error('Error al suscribir al evento:', error);
     throw error;
   }
 }
@@ -116,9 +116,9 @@ async function closeConnection() {
     if (connection) {
       await connection.close();
     }
-    console.log('📴 RabbitMQ connection closed');
+    console.log('Conexión RabbitMQ cerrada');
   } catch (error) {
-    console.error('❌ Error closing RabbitMQ connection:', error);
+    console.error('Error al cerrar conexión RabbitMQ:', error);
   }
 }
 
